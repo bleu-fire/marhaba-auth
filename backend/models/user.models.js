@@ -2,9 +2,10 @@
 import sequelize from "../config/database.js";
 import { DataTypes } from "sequelize";
 
-export default  sequelize.define("user",{
+const User = sequelize.define("user",{
 id:{
     type:DataTypes.INTEGER,
+    primaryKey:true,
     autoIncrement:true
 },
 fullname:{
@@ -19,5 +20,12 @@ email:{
 password:{
     type:DataTypes.STRING,
     allowNull:true,
+}},
+{
+    timestamps:true,
+    tableName:"user"
+
 }
-})
+)
+
+export default  User

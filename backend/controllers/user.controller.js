@@ -1,87 +1,122 @@
-
-import jwt  from "webjsontoken";
-import bcrypt from "bcrypt"
-import userModel from "../models/user.models";
-import { sign } from "jsonwebtoken";
-import { email } from "zod";
-
+import bcrypt from "bcrypt";
+import User from "../models/user.models.js";
+import JWT from "../service/jwt.js";
 
 class UserCreation {
-    async register (req,res) {
-        try{
-            const {email,password} = req.body;
-            const ExitUser  = await userModel.findOne({where:{
-                email
-            }})
-            if(ExitUser){
-                return res.status(409).json({message:"error"})
-            }
-        
 
-        
+async register(req, res, next) {
+  try {
+    const { email, password, fullname } = req.body;
 
-         const passwordhashed = bcrypt.hash(password,10)
-         const savePassword = await userModel.create({
-            email:email,
-            password:passwordhashed
-         });
+    const existingUser = await User.findOne({
+      where: {
+        email,
+      },
+    });
 
-         const jwtUser = jwt.sign(
-            {id:ExitUser.id,
-                email:ExitUser.email
-            },
-                "hello_games"
-            ,{
-                expiresIn:"15min"
-            }
-         );
-         return res.status(201).json({message:"User registered successfully"})
-        }
-         catch{
-             return res.status(502).json({message:"User is already"})
-         }
-        }
+    if (existingUser) {
+      return res.status(409).json({
+        message: "User already exists",
+      });
+    }
 
-    async login (req,res){
-        try{
-        const {email,password} = req.body
-        const User = await userModel.findOne({where:{
-            email
-        }})
-        if(!userModel){
-            return res.status(409).json({message:"the invalid password & email"})
-            
-        }
-const IsPasswordUser =  bcrypt.compare(password,userModel.password) 
+    const passwordHashed = await bcrypt.hash(password, 10);
 
-const creatJwt  = jwt.sgin({
-    id:userModel.id,
-    email:userModel.email
-},
-"hello_games"
-,{
-expiresIn:"15min"
-})
-if(!creatJwt){
+    const user = await User.create({
+      fullname,
+      email,
+      password: passwordHashed,
+    });
+    console.log("USER BEFORE JWT:", user);
 
-}
-return res.status(201).json({message:"the coockies",JWT:creatJwt})   
-        }
-catch{
-return res.status(501).json({message:"error invalide "})
-        }
-        }
-    async me (req,res){
-        const user = await userModel.findByPk(req.body.id,{attributes:{
-            exclude:["password"]
-        }})
-        if(!user){
-            return res.status(404).json("User Not found")
-        }
-        return res.status(200).json(user)
-        return res.status(501).json(user)
-    }    
+    const token = await JWT(user);
 
+    return res.status(201).json({
+      message: "User registered successfully",
+      user,
+      token,
+    });
+  } catch (error) {
+    console.error("REGISTER ERROR:", error);
+
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 }
 
-export default new UserCreation
+
+  
+async login(req, res, next) {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      user.password
+    );
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+
+
+
+    const token = await JWT(user);
+
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+    });
+
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+
+async me(req, res, next) {
+  try {
+    const user = await User.findByPk(req.user.id, {
+      attributes: {
+        exclude: ["password"],
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json(user);
+
+  } catch (error) {
+    console.error("ME ERROR:", error);
+
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+
+}
+
+export default new UserCreation();
