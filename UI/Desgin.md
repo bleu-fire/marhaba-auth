@@ -1,282 +1,301 @@
-# Marhba App Design System
+# Marhba Design System
 
 ## Overview
-Marhba is a mobile authentication app with a warm, minimal aesthetic inspired by Moroccan design. The visual language emphasizes clarity, trust, and elegant simplicity.
+Complete React component library and design tokens for the Marhba authentication interface. Pixel-perfect implementation of the warm, inviting Moroccan-inspired aesthetic.
 
 ---
 
-## Color Palette
+## Design Tokens
 
-### Primary Colors
-- **Background**: `#F5F1ED` (Warm Beige)
-- **Accent Gold**: `#C9A86A` (Warm Tan/Gold)
-- **Button Red**: `#E07856` (Terracotta/Rust)
-- **Text Dark**: `#1A1A1A` (Near Black)
-- **Text Light**: `#666666` (Medium Gray)
-
-### Secondary Colors
-- **Error Border**: `#E07856` (Red - same as button)
-- **Success**: `#4CAF50` (Green)
-- **Border Light**: `#EEEEEE` (Light Gray)
-
----
-
-## Typography
-
-### Font Family
-- **Primary**: System fonts (San Francisco, Segoe UI, Roboto)
-- **Style**: Modern, clean, accessible
-
-### Font Weights & Sizes
-- **Heading 1** (App Title): 28px, Bold (700)
-- **Heading 2** (Section Title): 20px, Bold (700)
-- **Body Text**: 16px, Regular (400)
-- **Label Text**: 14px, Regular (400)
-- **Helper Text**: 12px, Regular (400)
-
----
-
-## Screens
-
-### 1. Splash/Loading Screen
-**Purpose**: Session check on app launch
-
-**Elements:**
-- Background: `#F5F1ED`
-- Moroccan geometric logo (4-pointed star pattern)
-- Logo color: `#C9A86A` (Accent Gold)
-- App name: "Marhba" (28px, Bold)
-- Loading text: "Checking your session..." (14px, Gray)
-- Loading animation: Dot spinner (3 dots)
-
----
-
-### 2. Login Screen
-**Purpose**: Authenticate existing users
-
-**Layout:**
-- Header: "Welcome back" (20px, Bold)
-- Subtext: "Sign in to continue to your account" (14px, Gray)
-
-**Form Fields:**
-1. **Email Address**
-   - Label: "Email Address" (14px)
-   - Input field with placeholder: "oussama@email.com"
-   - Border color on error: `#E07856`
-   - Field height: 48px
-   - Padding: 12px
-
-2. **Password**
-   - Label: "Password" (14px)
-   - Input field with placeholder (dots/bullets)
-   - Eye icon to toggle visibility (right-aligned)
-   - Border color on error: `#E07856`
-   - Field height: 48px
-   - Padding: 12px
-
-**Buttons:**
-- **Sign In Button**
-  - Background: `#E07856` (Terracotta Red)
-  - Text: "Sign In" (White, 16px, Bold)
-  - Height: 48px
-  - Full width
-  - Border radius: 8px
-  - No border
-
-**Links:**
-- "Don't have an account?" (14px, Gray)
-- "Create account" (14px, `#E07856`, Bold)
-
----
-
-### 3. Register Screen
-**Purpose**: New user account creation
-
-**Layout:**
-- Header: "Welcome to Marhba" (20px, Bold)
-- Subtext: "Create your account and get started" (14px, Gray)
-
-**Form Fields:**
-1. **Full Name**
-   - Label: "Full Name" (14px)
-   - Placeholder: "Oussama"
-   - Field height: 48px
-   - Padding: 12px
-
-2. **Email**
-   - Label: "Email" (14px)
-   - Placeholder: "oussama@email.com"
-   - Field height: 48px
-   - Padding: 12px
-
-3. **Password**
-   - Label: "Password" (14px)
-   - Helper text: "Password must be at least 8 characters" (12px, Gray)
-   - Field height: 48px
-   - Padding: 12px
-
-4. **Confirm Password**
-   - Label: "Confirm Password" (14px)
-   - Field height: 48px
-   - Padding: 12px
-
-**Buttons:**
-- **Create Account Button**
-  - Background: `#E07856` (Terracotta Red)
-  - Text: "Create Account" (White, 16px, Bold)
-  - Height: 48px
-  - Full width
-  - Border radius: 8px
-
-**Links:**
-- "Already have an account?" (14px, Gray)
-- "Sign in" (14px, `#E07856`, Bold)
-
----
-
-### 4. Protected Home Screen
-**Purpose**: Authenticated user dashboard
-
-**Header:**
-- Title: "Marhba" (left-aligned)
-- User avatar (right-aligned, circular, 40px diameter)
-- Navigation arrow/back icon (left of avatar)
-
-**Content:**
-- Greeting: "Marhba, Oussama 👋" (24px, Bold)
-- Subtext: "Welcome back. You're successfully authenticated." (14px, Gray)
-
-**Security Card:**
-- Background: `#FFF5F2` (Light red/peach)
-- Icon: Shield with checkmark (terracotta red)
-- Title: "Account secured" (14px, Bold)
-- Status: "Your session is active" (12px, Gray)
-- Additional info: "Manrope SemiBold" (12px, Gray, smaller)
-
-**Spacing:**
-- Content padding: 16px
-- Card padding: 12px
-
----
-
-## Component Specifications
-
-### Input Field
+### Color Palette
 ```
-Height: 48px
-Padding: 12px (horizontal)
-Border: 1px solid #EEEEEE
-Border radius: 6px
-Background: White
-Font size: 16px
-Focus state: Border color `#C9A86A`
-Error state: Border color `#E07856`
+Cream Background:    #FAF8F3  (primary background)
+Beige:              #F5F2ED  (secondary background, inputs)
+Dark Beige:         #E8E4DD  (borders, dividers)
+Coral (Primary):    #F07856  (CTAs, accents)
+Coral Hover:        #E85C3F  (hover state)
+Gold:               #C9A961  (logo/branding accent)
+Text:               #2A2825  (primary text)
+Text Muted:         #7A7570  (secondary text, labels)
+Border:             #E0DDD8  (input borders, dividers)
+Error:              #D97757  (error states)
+```
+
+### Typography
+
+**Display Font** (Headings)
+- Family: Georgia, Garamond, serif
+- Sizes: 40px (lg), 32px (md), 24px (sm)
+- Weights: 600, 700
+
+**Body Font** (Content)
+- Family: Inter, system fonts, sans-serif
+- Sizes: 18px (lg), 16px (base), 14px (sm), 12px (xs)
+- Weights: 400, 500, 600
+
+### Spacing System
+```
+xs:  8px   (0.5rem)
+sm:  16px  (1rem)
+md:  24px  (1.5rem)
+lg:  32px  (2rem)
+xl:  48px  (3rem)
+xxl: 64px  (4rem)
+```
+
+### Radius & Shadows
+```
+Border Radius: 4px, 8px, 12px
+Shadow (sm):   0 1px 2px rgba(0,0,0,0.05)
+Shadow (md):   0 4px 6px rgba(0,0,0,0.1)
+```
+
+---
+
+## Components
+
+### Input
+Text input with optional label, error state, and password visibility toggle.
+
+**Props:**
+- `label?: string` - Field label
+- `error?: string` - Error message
+- `type?: string` - Input type (text, email, password, etc.)
+- All standard HTML input attributes
+
+**Usage:**
+```jsx
+<Input 
+  label="Email" 
+  type="email"
+  placeholder="user@example.com"
+  error={emailError}
+/>
+
+<Input 
+  label="Password" 
+  type="password"
+/>
 ```
 
 ### Button
+Reusable button with multiple variants and sizes.
+
+**Props:**
+- `variant?: 'primary' | 'secondary' | 'link'`
+- `size?: 'lg' | 'md' | 'sm'`
+- `children: React.ReactNode` - Button text/content
+- All standard HTML button attributes
+
+**Usage:**
+```jsx
+<Button variant="primary" size="lg">
+  Create Account
+</Button>
+
+<Button variant="link" size="sm">
+  Forgot password?
+</Button>
 ```
-Height: 48px
-Width: Full (with margins)
-Background: #E07856
-Text color: White
-Font size: 16px
-Font weight: Bold
-Border radius: 8px
-Shadow: Subtle (optional)
-Active state: Slightly darker shade
+
+### Sidebar
+Main navigation/branding container (left panel).
+
+**Usage:**
+```jsx
+<Sidebar>
+  <Logo />
+  {/* Additional sidebar content */}
+</Sidebar>
 ```
-
-### Card
-```
-Background: White or light variant
-Border radius: 12px
-Padding: 16px
-Shadow: Subtle (0 2px 8px rgba(0,0,0,0.08))
-```
-
----
-
-## Spacing & Layout
-
-### Margins
-- Page margins: 16px horizontal
-- Section spacing: 24px vertical
-- Element spacing: 12px vertical
-
-### Safe Area
-- Respects notch/dynamic island
-- Status bar: 44px (iPhone safe area)
-- Bottom safe area: 16px minimum
-
----
-
-## Visual Details
 
 ### Logo
-- Moroccan 4-pointed star pattern
-- Geometric, symmetrical design
-- Color: `#C9A86A` (Gold)
-- Size on splash: ~80x80px
-- Size on header: ~32x32px
+Branded logo component with Marhba branding (star + text).
 
-### Loading Animation
-- 3-dot spinner
-- Color: `#C9A86A`
-- Animation: Fade in/out cycle
+**Usage:**
+```jsx
+<Logo />
+```
 
-### Icons
-- Eye icon (password toggle): `#999999`
-- Arrow icon (navigation): `#1A1A1A`
-- Shield icon (security): `#E07856`
-- All icons: 20-24px size
+### AuthContainer
+Main authentication layout (combines sidebar + form area + decorative section).
+
+**Props:**
+- `title?: string` - Page title
+- `subtitle?: string` - Page subtitle
+- `children: React.ReactNode` - Form content
+
+**Usage:**
+```jsx
+<AuthContainer 
+  title="Welcome to Marhba" 
+  subtitle="Create your account and get started"
+>
+  {/* Form content */}
+</AuthContainer>
+```
 
 ---
 
-## States & Interactions
+## Page Templates
 
-### Input Focus
-- Border color: `#C9A86A` (Gold accent)
-- Cursor visible
-- Keyboard appears
+### SignupPage
+Complete signup flow with:
+- Full Name input
+- Email input
+- Password input with confirmation
+- "Create Account" button
+- Link to login
 
-### Input Error
-- Border color: `#E07856` (Red)
-- Error message appears below (12px, red text)
+### LoginPage
+Complete login flow with:
+- Email input
+- Password input with visibility toggle
+- "Remember this device" checkbox
+- "Forgot password?" link
+- "Sign In" button
+- Link to signup
 
-### Button Hover
-- Background: Darker shade of `#E07856`
-- Cursor: Pointer
-- Scale: Optional subtle scale effect
+---
 
-### Button Active
-- Background: Darker shade
-- Text: Remains white
+## Design Decisions
+
+### Color Choices
+- **Warm Palette**: Cream/beige background creates inviting, peaceful aesthetic
+- **Coral Accent**: Energetic, action-oriented CTAs that stand out without being jarring
+- **Gold Detail**: Premium, warm accent for logo/branding (Moroccan aesthetic)
+
+### Typography
+- **Serif Display Fonts**: Elegant, distinctive headings (Georgia/Garamond)
+- **Sans-serif Body**: Clean, readable content (Inter)
+- **Clear Hierarchy**: Large display fonts for titles, smaller body fonts for forms
+
+### Layout
+- **Sidebar + Form Split**: Classic two-column auth layout
+- **Decorative Right Panel**: Botanical/Moroccan imagery area (gradient overlay)
+- **Breathing Room**: Generous spacing creates premium feel
+
+### Interaction
+- **Focus States**: Subtle coral glow on input focus
+- **Hover Effects**: Button color transitions
+- **Password Toggle**: Eye icon reveals password
+- **Clear Error States**: Red text + border for validation
+
+---
+
+## Usage Instructions
+
+### 1. Install Dependencies
+```bash
+npm install lucide-react
+# lucide-react for icons (Eye, EyeOff, ArrowLeft, ArrowRight)
+```
+
+### 2. Import Components
+```jsx
+import { 
+  Input, 
+  Button, 
+  Sidebar, 
+  Logo, 
+  AuthContainer,
+  tokens 
+} from './marhba-design-system';
+```
+
+### 3. Access Design Tokens
+```jsx
+const myColor = tokens.colors.coral;
+const mySpacing = tokens.spacing.md;
+const myFont = tokens.typography.body.family;
+```
+
+### 4. Build Custom Pages
+```jsx
+const MyCustomPage = () => {
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <Sidebar>
+        <Logo />
+      </Sidebar>
+      <AuthContainer title="Custom Page">
+        {/* Your content */}
+      </AuthContainer>
+    </div>
+  );
+};
+```
+
+---
+
+## Responsive Considerations
+
+Current implementation is optimized for desktop. For mobile:
+- Switch from two-column to full-width stack
+- Reduce padding/spacing by 50%
+- Hide decorative right panel or move to top
+- Adjust font sizes down by 1-2 sizes
+
+Example mobile breakpoint:
+```jsx
+@media (max-width: 768px) {
+  // Stack layout vertically
+  // Reduce padding
+  // Adjust font sizes
+}
+```
 
 ---
 
 ## Accessibility
 
-- Minimum touch target: 48x48px (buttons, input fields)
-- Color contrast ratio: WCAG AA compliant
-- Focus indicators: Visible on all interactive elements
-- Text size: Minimum 14px for body text
-- Error messages: Always accompanied by visual indicator
+- ✅ Focus states on all inputs (coral glow border)
+- ✅ Error messages linked to inputs
+- ✅ Visible password toggle (Eye/EyeOff icons)
+- ✅ Proper label associations
+- ✅ Color contrast meets WCAG AA
+- ✅ Keyboard navigable
 
 ---
 
-## Mobile Considerations
+## Customization
 
-- Status bar: 44px height (iPhone)
-- Viewport: Full screen width
-- Notch clearance: Safe area insets respected
-- Portrait orientation primary
-- Touch-friendly spacing (48px minimum taps)
+All tokens are centralized in the `tokens` object. To customize:
+
+```jsx
+// Change primary coral color
+tokens.colors.coral = '#FF6B6B';
+
+// Change body font
+tokens.typography.body.family = '"Poppins", sans-serif';
+
+// Change spacing
+tokens.spacing.md = '20px';
+```
+
+Components automatically use updated tokens.
 
 ---
 
-## File Exports
+## Component Export Summary
 
-All design files use:
-- RGB color space
-- PNG for icons (transparent background)
-- SVG for logo and interactive elements
+```jsx
+// Components
+export { Input, Button, Sidebar, Logo, AuthContainer };
+
+// Full demo with page switcher
+export default Demo;
+
+// Design tokens
+export { tokens };
+```
+
+---
+
+## Notes
+
+- All colors use hex values for maximum compatibility
+- Icons from `lucide-react` are small, fast, and tree-shakeable
+- Typography pairing (serif + sans-serif) creates distinctive aesthetic
+- Warm color palette evokes comfort, hospitality, luxury travel
+- Component sizes scale proportionally with tokens

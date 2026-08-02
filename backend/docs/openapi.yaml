@@ -1,0 +1,222 @@
+openapi: 3.0.3
+info:
+  title: Marhba Authentication API
+  description: Authentication API for the Marhba Auth Application.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      description: Creates a new user record in the database and automatically returns an authentication token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - fullname
+                - email
+                - password
+              properties:
+                fullname:
+                  type: string
+                  example: "Oussama"
+                  description: The full name of the user.
+                email:
+                  type: string
+                  format: email
+                  example: "oussama@email.com"
+                  description: A unique email address.
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  example: "password123"
+                  description: A secure password of at least 8 characters.
+      responses:
+        '201':
+          description: User registered successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User registered successfully"
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      fullname:
+                        type: string
+                        example: "Oussama"
+                      email:
+                        type: string
+                        example: "oussama@email.com"
+                      createdAt:
+                        type: string
+                        format: date-time
+                      updatedAt:
+                        type: string
+                        format: date-time
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  refreshToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid request data (validation error).
+        '409':
+          description: User already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User already exists"
+        '500':
+          description: Internal server error.
+
+  /api/auth/login:
+    post:
+      summary: Authenticate user
+      description: Logs in a user using their email and password, returning an auth token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "oussama@email.com"
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
+      responses:
+        '200':
+          description: Login successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Login successful"
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  refreshToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid request data.
+        '401':
+          description: Invalid email or password.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Invalid email or password"
+        '500':
+          description: Internal server error.
+
+  /api/auth/me:
+    get:
+      summary: Retrieve current authenticated user profile
+      description: Returns the user profile details based on the Bearer JWT token in the request header.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile details retrieved.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  fullname:
+                    type: string
+                    example: "Oussama"
+                  email:
+                    type: string
+                    example: "oussama@email.com"
+                  createdAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
+        '401':
+          description: Access token missing, invalid, or expired.
+        '404':
+          description: User not found.
+        '500':
+          description: Internal server error.
+
+  /api/auth/refresh:
+    post:
+      summary: Refresh authentication tokens
+      description: Exchanges a valid refresh token for a new access token (15m) and refresh token (7d).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - refreshToken
+              properties:
+                refreshToken:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        '200':
+          description: Tokens refreshed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                  refreshToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Refresh token missing from request body.
+        '401':
+          description: Refresh token is expired, invalid, or does not match the database.
+        '500':
+          description: Internal server error.
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

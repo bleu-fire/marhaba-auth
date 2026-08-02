@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.models.js";
-import JWT from "../service/jwt.js";
+import { generateAccessToken, generateRefreshToken } from "../service/jwt.js";
+import jwt from "jsonwebtoken";
 
 class UserCreation {
 
@@ -29,12 +30,17 @@ async register(req, res, next) {
     });
     console.log("USER BEFORE JWT:", user);
 
-    const token = await JWT(user);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    user.refreshToken = refreshToken;
+    await user.save();
 
     return res.status(201).json({
       message: "User registered successfully",
       user,
-      token,
+      accessToken,
+      refreshToken,
     });
   } catch (error) {
     console.error("REGISTER ERROR:", error);
@@ -76,11 +82,16 @@ async login(req, res, next) {
 
 
 
-    const token = await JWT(user);
+    const accessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    user.refreshToken = refreshToken;
+    await user.save();
 
     return res.status(200).json({
       message: "Login successful",
-      token,
+      accessToken,
+      refreshToken,
     });
 
   } catch (error) {
@@ -111,6 +122,52 @@ async me(req, res, next) {
   } catch (error) {
     console.error("ME ERROR:", error);
 
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+}
+
+async refresh(req, res, next) {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({
+        message: "Refresh token is required",
+      });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(refreshToken, process.env.JWT_SECRET_PASSWORD);
+    } catch (err) {
+      return res.status(401).json({
+        message: "Invalid or expired refresh token",
+      });
+    }
+
+    const user = await User.findByPk(decoded.id);
+
+    if (!user || user.refreshToken !== refreshToken) {
+      return res.status(401).json({
+        message: "Invalid refresh token",
+      });
+    }
+
+    const newAccessToken = generateAccessToken(user);
+    const newRefreshToken = generateRefreshToken(user);
+
+    user.refreshToken = newRefreshToken;
+    await user.save();
+
+    return res.status(200).json({
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
+
+  } catch (error) {
+    console.error("REFRESH ERROR:", error);
     return res.status(500).json({
       message: error.message,
     });

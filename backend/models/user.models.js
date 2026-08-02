@@ -20,6 +20,10 @@ email:{
 password:{
     type:DataTypes.STRING,
     allowNull:true,
+},
+refreshToken:{
+    type:DataTypes.TEXT,
+    allowNull:true,
 }},
 {
     timestamps:true,

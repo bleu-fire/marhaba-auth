@@ -1,6 +1,9 @@
 const  logger = (req ,res,next)=>{
-    console.log(req.method,req.url,Date.now());
-    next()
+  const timestamp = new Date().toISOString();
+  const method = req.method;
+  const url = req.originalUrl;
+  console.log(`[${timestamp}] ${method} - ${url}`);
+  next();
     
 }
 export default logger;
