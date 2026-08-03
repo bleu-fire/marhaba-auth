@@ -21,7 +21,6 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   
   // Validation / Error States
   const [emailError, setEmailError] = useState("");
@@ -139,17 +138,6 @@ export default function Login() {
               rightElement={forgotLink}
             />
 
-            {/* Remember Me Checkbox */}
-            <TouchableOpacity
-              style={styles.rememberContainer}
-              onPress={() => setRememberMe(!rememberMe)}
-              activeOpacity={0.8}
-            >
-              <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
-                {rememberMe && <Text style={styles.checkmark}>✓</Text>}
-              </View>
-              <Text style={styles.rememberText}>Remember this device</Text>
-            </TouchableOpacity>
 
             {/* Sign In Button */}
             <CustomButton
@@ -256,12 +244,6 @@ const styles = StyleSheet.create({
     color: "#F07856", // Coral Accent
     fontSize: 12,
     fontWeight: "600",
-  },
-  rememberContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-    marginTop: 2,
   },
   checkbox: {
     width: 15,

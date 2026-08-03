@@ -7,7 +7,9 @@ import {ApplySchema,RegisterSchema,ValidationSchema} from "../middleware/validat
 const route = Router();
 
 route.post(
-  "/api/auth/register",ValidationSchema(RegisterSchema),UserCreation.register
+  "/api/auth/register",
+  ValidationSchema(RegisterSchema),
+  UserCreation.register
 );
 
 route.post(
